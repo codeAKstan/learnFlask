@@ -19,5 +19,10 @@ def contact():
 def show_user_profile(username):
     return f"<h2>User Profile</h2><p>Hello, {username}!</p>"
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return "<h2>404 - Page Not Found</h2>", 404
+
+
 if __name__ == '__main__':
     app.run(debug=True)
