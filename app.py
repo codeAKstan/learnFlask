@@ -4,12 +4,11 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return render_template('index.html', title="Home page", user="codeAKstan")
+    return render_template('index.html', user="codeAKstan")
 
-@app.route('/items')
-def items():
-    items = ['apple', 'banana', 'grape', 'strawberry']
-    return render_template('items.html', items=items)
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 if __name__ == "__main__":
     app.run(debug=True)
