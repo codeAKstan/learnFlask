@@ -17,9 +17,10 @@ def form():
 def submit():
     if request.method == 'POST':
         user_name = request.form['name']
-        return f"Hello, {user_name}!"
     else:
-        return "Please submit the form using POST."
+        user_name = request.args.get('name', 'Guest')  # Default to 'Guest'
+    return f"Hello, {user_name}!"
+
 
 
 if __name__ == "__main__":
