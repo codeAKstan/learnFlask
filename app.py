@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, url_for, redirect, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, TelField
 from wtforms.validators import DataRequired
 
 app = Flask(__name__)
@@ -8,6 +8,8 @@ app.config['SECRET_KEY'] = 'mysecretkey'
 
 class NameForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired(message="Please enter your email")])
+    number = TelField('Tele', validators=[DataRequired()])
     submit = SubmitField('Submit')
 
 @app.route('/', methods=['POST', 'GET'])
