@@ -1,27 +1,23 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, render_template, url_for, redirect, flash
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField
+from wtforms.validators import DataRequired
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'mysecretkey'
 
-@app.route('/')
-def home():
-    return render_template('index.html', user="codeAKstan")
+class NameForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    submit = SubmitField('Submit')
 
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
-@app.route('/form')
-def form():
-    return render_template('form.html')
-@app.route('/submit', methods=['POST', 'GET'])
-def submit():
-    if request.method == 'POST':
-        user_name = request.form['name']
-    else:
-        user_name = request.args.get('name', 'Guest')  # Default to 'Guest'
-    return f"Hello, {user_name}!"
+@app.route('/', methods=['POST', 'GET'])
+def index():
+    form = NameForm()
+    if form.validate_on_submit():
+        flash(f"Hello, {form.name.data}!", 'success')
+        return redirect(url_for('index'))
+    return render_template('form_wtf.html', form=form)
 
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     app.run(debug=True)
