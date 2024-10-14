@@ -29,6 +29,7 @@
             {{ form.email(size=32) }}<br>
             {{ form.number.label }}<br>
             {{ form.number(size=32) }}<br>
+
             {% if form.name.errors %}
         <ul class="error">
             {% for error in form.name.errors %}

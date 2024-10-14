@@ -1,0 +1,11 @@
+python
+>>> from app import app, db, User
+>>> with app.app_context():
+// creating the tables
+...     db.create_all()
+// adding a user to the table
+...     user = User(username="peter", email="peter@gmail.com")
+...     db.session.add(user)
+...     db.session.commit()
+// viewing the users
+...     User.query.all()
