@@ -1,11 +1,69 @@
-{% extends "base.html"%}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content%}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask-WTF Form</title>
+    <style>
+        .success {
+            color: green;
+        }
 
-<ul>
-    {% for user in users %}
-    <li>{{user.username}} - {{user.email}}</li>
-    {% endfor %}
-</ul>
+        .error {
+            color: red;
+        }
+    </style>
+</head>
 
-{% endblock %}
+<body>
+    <h1>Enter Your Name and Email</h1>
+
+    <form method="POST" action="/">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name.label }}<br>
+            {{ form.name(size=32) }}<br>
+            {{ form.email.label }}<br>
+            {{ form.email(size=32) }}<br>
+        </p>
+
+        <!-- Error display for name and email -->
+        {% if form.name.errors %}
+        <ul class="error">
+            {% for error in form.name.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if form.email.errors %}
+        <ul class="error">
+            {% for error in form.email.errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul>
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+    <h2>Registered Users</h2>
+    <ul>
+        {% for user in users %}
+        <li>{{ user.username }} ({{ user.email }})</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
