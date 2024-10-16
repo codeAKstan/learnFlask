@@ -46,5 +46,32 @@ def home():
     users = User.query.all()
     return render_template('index.html', form=form, users=users)
 
+
+@app.route('/update/<int:user_id>', methods=['GET', 'POST'])
+def update(user_id):
+    user = User.query.get_or_404(user_id)  # Fetch the user by ID or return 404 if not found
+    form = NameForm()
+    
+    if form.validate_on_submit():
+        user.username = form.name.data  # Update the username
+        user.email = form.email.data  # Update the email
+        db.session.commit()
+        flash('User updated successfully!', 'success')
+        return redirect(url_for('home'))
+    
+    # Pre-populate the form with existing user data
+    form.name.data = user.username
+    form.email.data = user.email
+    return render_template('update.html', form=form, user=user)
+
+@app.route('/delete/<int:user_id>', methods=['POST'])
+def delete(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash('User deleted successfully!', 'success')
+    return redirect(url_for('home'))
+
+
 if __name__ == '__main__':
     app.run(debug=True)
